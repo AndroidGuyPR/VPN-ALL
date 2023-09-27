@@ -10,10 +10,9 @@ for interface in "${interfaces[@]}"; do
     echo "- $interface"
 done
 
-# Prompt user for input and output interfaces
+# Prompt user for VPN interface
 echo
-read -p "Enter the input interface: " IN_INTERFACE
-read -p "Enter the output interface: " OUT_INTERFACE
+read -p "Enter the VPN interface: " VPN_INTERFACE
 
 # Enable IP forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -26,12 +25,12 @@ ip -4 rule del prio 100
 ip -6 rule del prio 100
 
 # Set up forwarding rules for IPv4
-ip -4 route add default dev $OUT_INTERFACE table 100
-ip -4 rule add from $IN_INTERFACE table 100
+ip -4 route add default dev $VPN_INTERFACE table 100
+ip -4 rule add from $VPN_INTERFACE table 100
 
 # Set up forwarding rules for IPv6
-ip -6 route add default dev $OUT_INTERFACE table 100
-ip -6 rule add from $IN_INTERFACE table 100
+ip -6 route add default dev $VPN_INTERFACE table 100
+ip -6 rule add from $VPN_INTERFACE table 100
 
-echo "Packet forwarding from $IN_INTERFACE to $OUT_INTERFACE has been enabled for both IPv4 and IPv6."
+echo "Packet forwarding from $VPN_INTERFACE to all other interfaces has been enabled for both IPv4 and IPv6."
 ```
